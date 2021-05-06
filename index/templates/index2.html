@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+ <head>
+
+  <link rel="stylesheet" type="text/css" 
+  href="{% static 'webgis/styl3.css' %}">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,500&display=swap" rel="stylesheet">
+  
+
+  
+</head>
+<body>
+<div id="container">
+<div id="menu">
+<h2><center>Analiza potencjału budowlanego dla miejscowości Kijany oparta o algorytmy nachylenia i ekspozycji </center></h2>
+<div class="nav">
+			<ol>
+				<li><a href="{% url '' %}">Mapa</a></li>
+				<li><a href="{% url 'korzystanie' %}">Jak korzystać</a></li>
+				<li><a href="{% url 'algorytmy' %}">Algorytmy</a></li>
+				<li><a href="{% url 'stwo_analiza' %}">Stworzenie serwisu </a></li>
+				
+			</ol>
+		
+		</div>
+</div>
+
+<div id="map">
+
+
+<h2>O serwisie</h2>
+<p>Serwis powstał na potrzeby pracy magisterskiej <em>"Serwis internetowy przedstawiający analizę potencjału budowalnego działek w miejscowości Kijany, 
+opartą o algorytymy wyznaczania nachylenia i ekspozycji"</em>. Głównym celem serwisu jest wizualizacja efektów analizy.
+Analiza dotyczy działek z obrębu ewidencyjnego Kijany, położonego w gminie Spiczyn, powiat łęczyński. Jak podano w tytule pracy potencjał budowlany analizowano  tylko pod względem wyznaczania nachylenia i ekspozycji.
+Nie brano pod uwagę statusu prawnego działek, ani innych aspektów wpływających na aktrakcyjność konkretnej działki.<br>
+Kryterium jakie zostało użyto w analizie:
+<ul>
+<li>Nachylenie działki mniejsze lub równe 8% </li>
+<li>Ekspozycja stoku na terenie danej działki inna niż północna lub północna, jeśli stok o takiej ekspozycji nie przekracza 50% powierzchni danej działki  </li>
+</ul>
+Efekt analizy przedstawiony jest w postaci trzech warstw wektorowych, które znajdują się w zakładce <em>Mapa</em>.
+<ul>
+<li>Działki o terenie nachylonym do 8% (kolor zielony) </li>
+<li>Działki spełniające kryterium eskpozycji (kolor fioletowy) </li>
+<li>Działki spełniające oba kryteria  (kolor zółty)</li>
+</ul>
+Poza podstroną <em>Mapy</em> w serwisie można jeszcze znaleźć:
+<ul>
+<li><em>Jak korzystać</em>, gdzie dokładnie opisany jest sposób korzystania z funkcjonalności mapy </li>
+<li><em>Algorytmy</em>, gdzie znajduje się krótki opis algorytmów obliczających mapy nachylenia i ekspozycji</li>
+<li><em>Stworzenie serwisu</em>, gdzie krótko opisano proces tworzenia serwisu</li>
+</ul>
+</div>
+<div id=footer>
+Strona powstała na potrzeby pracy magisterskiej "Serwis internetowy przedstawiający analizę potencjału budowalnego działek w miejscowości Kijany, 
+opartą o algorytymy nachylenia i ekspozycji", praca napisana została pod patronatem dr hab. Beaty Byliny , na wydziale MFI UMCS"
+</div>
+
+</div>
+
+</body>
+</html>

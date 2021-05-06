@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+ <head>
+
+  <link rel="stylesheet" type="text/css" 
+  href="{% static 'webgis/styl3.css' %}">
+  
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,500&display=swap" rel="stylesheet">
+  
+  
+</head>
+<body>
+<div id="container">
+<div id="menu">
+<h2><center>Analiza potencjału budowlanego dla miejscowości Kijany oparta o algorytmy nachylenia i ekspozycji </center></h2>
+<div class="nav">
+			<ol>
+				<li><a href="{% url '' %}">Mapa</a></li>
+				<li><a href="{% url 'index2' %}">O serwisie</a></li>
+				<li><a href="{% url 'algorytmy' %}">Algorytmy</a></li>
+				<li><a href="{% url 'stwo_analiza' %}">Stworzenie serwisu </a></li>
+				
+			</ol>
+		
+		</div>
+</div>
+
+<div id="map">
+<h2>Jak korzystać</h2>
+<p style="text-align:center;"><img src="{% static 'webgis/panel3.png' %}"/></p>
+ 1. Ikony + i - przybliżają i oddalają mapę <br>
+ 2. Ikona pomiaru, po najechaniu na nią kursorem będzie można utworzyć pomiar poprzez dodawanie punktów na mapie tworzących linie. Jeśli pomiar  tworzy obiekt zamknięty obliczana jest dodatkowo powierzchnia i wyświetla się dodatkowe okno. 
+ Pomiar długości ścieżki podawany jest w metrach, zaś powierzchnia pomiaru w metrach kwadratowych. <br>
+ 3. Ikona lupy, po najechaniu na nią kursorem można wyszukać działke wpisując jej numer, dodatkowo system podpowiada inne numery zaczynające się od wpisanego numeru.
+ Jeśli nie ma działki o podanym numerze wyświetla się napis "Nie ma działki o podanym numerze".<br>
+ 4. Ikona panelu map podkładowych, po najechaniu na nią kursorem wyświetla się lista map podkładowych, panel jest tak skonstruowany, że jedna mapa zawsze musi być włączona, mapy nie mogą się nakładać.<br>
+ 5. Ikona panelu map dodatkowych, po najechaniu na nią kursorem wyświetla się lista map dodatkowych, aktualnie jest to tylko "Plan zagospodarowania gminy Spiczyn", panel skonstruowany tak, że mapa dodatkowa nie jest ładowana domyślnie, można ją włączyć po czym wyłączyć.<br>
+ 6. Panel warstw, domyślnie ładowana jest warstwa Wszystkie działki (niebieska), oprócz tego są tam jeszcze warstwy: "Działki o terenie nachylonym o mniej niż 8%" (zielona), "Działki spełniające kryterium ekspozycji" (fiolet), "Działki spełniające oba kryteria" (zółta).
+Panel skonstruowany jest tak, że zawsze musi być włączona jedna warstwa, warstwy nie mogą się nakładać.<br>
+ Dodatkowo klikając lewym przyciskiem myszy w działkę na mapie, wyświetla się informacją z jej numerem, obwodem podanym w metrach oraz polem podanym w arach
+ 
+
+</div>
+<div id=footer>
+Strona powstała na potrzeby pracy magisterskiej "Serwis internetowy przedstawiający analizę potencjału budowalnego działek w miejscowości Kijany, 
+opartą o algorytymy nachylenia i ekspozycji", praca napisana została pod patronatem dr hab. Beaty Byliny , na wydziale MFI UMCS"
+</div>
+
+</div>
+
+</body>
+</html>

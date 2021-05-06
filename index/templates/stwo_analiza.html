@@ -1,0 +1,55 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+ <head>
+
+  <link rel="stylesheet" type="text/css" 
+  href="{% static 'webgis/styl3.css' %}">
+   
+  
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,500&display=swap" rel="stylesheet">
+
+</head>
+<body>
+<div id="container">
+<div id="menu">
+<h2><center>Analiza potencjału budowlanego dla miejscowości Kijany oparta o algorytmy nachylenia i ekspozycji </center></h2>
+<div class="nav">
+			<ol>
+				<li><a href="{% url '' %}">Mapa</a></li>
+				<li><a href="{% url 'index2' %}">O serwisie</a></li>
+				<li><a href="{% url 'korzystanie' %}">Jak korzystać</a></li>
+				<li><a href="{% url 'algorytmy' %}">Algorytmy</a></li>
+				
+			</ol>
+		
+		</div>
+</div>
+
+<div id="map">
+
+
+<h2>Stworzenie serwisu</h2>
+Pierwszym etapem tworzenia tego serwisu było opracowanie analizy, następny etap to budowanie aplikacji z pomocą frameworku Django na lokalnym serwerze, ostatni to wdrożenie aplikacji na platformę Heroku z pomocą systemu kontroli wersji Git.<br><br>
+Analiza powstała na podstawie darmowych danych: punktów wysokościowych i warstw jednostek podziałów administracyjnych
+ zawierających poligony obrębów ewidencyjnych, dane te pochodzą z zasobów Głównego Urzędu Geodezji i Kartografii.
+Do analizy zostały także użyte poligony działek ewidencyjnych uzyskanych za pomocą wtyczki Wyszukiwarka działek ULDK.  Praca z tymi danymi odbywała się w programach QGIS i ArcGIS. <br><br>
+Serwis wykorzystuje framework Django i jego moduł pomocniczy GeoDjango. Django to darmowy i open-source’owy framework do tworzenia aplikacji webowych, napisany w Pythonie.
+To taki zbiór narzędzi, dzięki którym tworzenie stron internetowych jest szybsze i łatwiejsze. GeoDjango jest dołączonym modułem pomocniczym dla Django, 
+który przekształca go w światowej klasy geograficzny framework sieciowy. GeoDjango dąży do tego, aby tworzenie geograficznych aplikacji internetowych, 
+takich jak usługi oparte na lokalizacji, były jak najprostsze. Jego cechy to: pola modelu Django dla geometrii OGC, wysokopoziomowe interfejsy 
+Pythona do obsługi geometrii GIS i operacji rastrowych oraz manipulacji danymi w różnych formatach.<br><br>
+Hosting serwisu jest możliwy, dzięki platformie Heroku. Heroku jest to platforma chmurowa stworzona w modelu PaaS (Platform as a Service) obsługująca kilka języków programowania. 
+Jest jedną z pierwszych tego typu platform. Aktualnie obsługuje języki Java, JavaScript (Node.js), Scala, Clojure, Python i PHP. Umożliwia szybką i stosunkowo prostą budowę i zrządzanie, 
+a także automatyczne skalowanie nowoczesnych aplikacji bez konieczności zajmowania się infrastrukturą i konfiguracją serwerów.
+
+</div>
+<div id=footer>
+Strona powstała na potrzeby pracy magisterskiej "Serwis internetowy przedstawiający analizę potencjału budowalnego działek w miejscowości Kijany, 
+opartą o algorytymy nachylenia i ekspozycji", praca napisana została pod patronatem dr hab. Beaty Byliny, na wydziale MFI UMCS"
+</div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,102 @@
+from django.contrib.gis.db import models
+
+
+class World(models.Model):
+    fips = models.CharField(max_length=2)
+    iso2 = models.CharField(max_length=2)
+    iso3 = models.CharField(max_length=3)
+    un = models.IntegerField()
+    name = models.CharField(max_length=50)
+    area = models.IntegerField()
+    pop2005 = models.BigIntegerField()
+    region = models.IntegerField()
+    subregion = models.IntegerField()
+    lon = models.FloatField()
+    lat = models.FloatField()
+    geom = models.MultiPolygonField(srid=4326, spatial_index=False, null=True, blank=True)
+
+
+class dzialki_wszystkie_wgs(models.Model):
+    id = models.CharField(max_length=254, primary_key=True)
+    objectid = models.CharField(max_length=254)
+    identyfika = models.CharField(max_length=254)
+    powierzchn = models.CharField(max_length=254)
+    teryt = models.CharField(max_length=254)
+    numer = models.CharField(max_length=254)
+    obreb = models.CharField(max_length=254)
+    wojewodztw = models.CharField(max_length=254)
+    powiat = models.CharField(max_length=254)
+    gmina = models.CharField(max_length=254)
+    data_od = models.CharField(max_length=254)
+    shape_leng = models.CharField(max_length=254)
+    shape_area = models.CharField(max_length=254)
+    geom = models.MultiPolygonField(srid=4326,spatial_index=False, null=True, blank=True)
+    
+
+class dzialki_wszystkie_wgs_dobre(models.Model):
+    id = models.CharField(max_length=254,primary_key=True)
+    objectid = models.CharField(max_length=254)
+    identyfika = models.CharField(max_length=254)
+    powierzchn = models.CharField(max_length=254)
+    teryt = models.CharField(max_length=254)
+    numer = models.CharField(max_length=254)
+    obreb = models.CharField(max_length=254)
+    wojewodztw = models.CharField(max_length=254)
+    powiat = models.CharField(max_length=254)
+    gmina = models.CharField(max_length=254)
+    shape_leng = models.CharField(max_length=254)
+    shape_area = models.CharField(max_length=254)
+    pole_ar = models.FloatField()
+    obwod = models.FloatField()
+    geom = models.MultiPolygonField(srid=4326, spatial_index=False, null=True, blank=True)
+    
+class dzialki_slope_wgs(models.Model):
+    id = models.CharField(max_length=254, primary_key=True)
+    objectid = models.CharField(max_length=254)
+    identyfika = models.CharField(max_length=254)
+    numer = models.CharField(max_length=254)
+    obreb = models.CharField(max_length=254)
+    wojewodztw = models.CharField(max_length=254)
+    gmina = models.CharField(max_length=254)
+    shape_area = models.CharField(max_length=254)
+    pole_ar = models.FloatField()
+    obwod = models.FloatField()
+    geom = models.MultiPolygonField(srid=4326, spatial_index=False, null=True, blank=True)
+    
+
+class dzialki_razem_wgs_dobre(models.Model):
+    id = models.CharField(max_length=254, primary_key=True)
+    objectid = models.CharField(max_length=254)
+    identyfika = models.CharField(max_length=254)
+    numer = models.CharField(max_length=254)
+    obreb = models.CharField(max_length=254)
+    wojewodztw = models.CharField(max_length=254)
+    gmina = models.CharField(max_length=254)
+    shape_area = models.CharField(max_length=254)
+    pole_ar = models.FloatField()
+    powierzchn = models.CharField(max_length=254)
+    teryt = models.CharField(max_length=254)
+    powiat = models.CharField(max_length=254)
+    shape_leng = models.CharField(max_length=254)
+    obwod = models.FloatField()
+    geom = models.MultiPolygonField(srid=4326, spatial_index=False, null=True, blank=True)
+    
+class dzialki_aspect_wgs_dobre(models.Model):
+    id = models.CharField(max_length=254,primary_key=True)
+    objectid = models.CharField(max_length=254)
+    identyfika = models.CharField(max_length=254)
+    powierzchn = models.CharField(max_length=254)
+    teryt = models.CharField(max_length=254)
+    numer = models.CharField(max_length=254)
+    obreb = models.CharField(max_length=254)
+    wojewodztw = models.CharField(max_length=254)
+    powiat = models.CharField(max_length=254)
+    gmina = models.CharField(max_length=254)
+    data_od = models.CharField(max_length=254)
+    shape_leng = models.CharField(max_length=254)
+    shape_area = models.CharField(max_length=254)
+    obwod = models.FloatField()
+    pole_ar = models.FloatField()
+    geom = models.MultiPolygonField(srid=4326, spatial_index=False, null=True, blank=True)
+
+

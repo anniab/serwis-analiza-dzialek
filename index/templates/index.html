@@ -1,0 +1,466 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta name="author" content="Anna Bujak">
+  
+  <link rel="stylesheet" type="text/css" 
+  href="{% static 'webgis/styl3.css' %}">
+ 
+ 
+   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+   integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+   crossorigin=""/>
+   <link rel="stylesheet" href="https://unpkg.com/leaflet-search@2.3.7/dist/leaflet-search.src.css" />
+   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,500&display=swap" rel="stylesheet">
+   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
+   <link rel="stylesheet" type="text/css" href="{% static 'webgis/measure.css' %}">
+  
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+   integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+   crossorigin=""></script>
+  
+  <script src=" https://unpkg.com/leaflet@1.6.0/dist/leaflet.js "></script>
+  <script src=" https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.min.js " ></script>
+  <script src="https://unpkg.com/leaflet-search@2.9.9/dist/leaflet-search.src.js"></script>
+
+
+  <script src="{% static 'webgis/leaflet-panel.js' %}" ></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="{% static 'webgis/activlayers.js' %}" ></script>
+  <script src="{% static 'webgis/leaflet-search.js' %}" ></script>
+  <script src="{% static 'webgis/measure.js' %}" ></script>
+  
+</head>
+<body>
+<div id="container">
+<div id="menu">
+<h2><center>Analiza potencjału budowlanego dla miejscowości Kijany oparta o algorytmy nachylenia i ekspozycji </center></h2>
+<div class="nav">
+			<ol>
+				<li><a href="{% url 'index2' %}">O serwisie</a></li>
+				<li><a href="{% url 'korzystanie' %}">Jak korzystać</a></li>
+				<li><a href="{% url 'algorytmy' %}">Algorytmy</a></li>
+				<li><a href="{% url 'stwo_analiza' %}">Stworzenie serwisu </a></li>
+				
+			</ol>
+		
+		</div>
+</div>
+
+<div id="map">
+
+
+	<script>
+		var map = L.map('map', {
+			center: [51.334575, 22.776597],
+			zoom: 20,
+			measureControl:true,
+			zoomControl: true
+		
+			
+		});
+		
+		
+		(function (root, factory) {//uniwerrsalny moduł ładujący
+	if (typeof define === 'function' && define.amd) {
+		// AMD. Register as an anonymous module. „amd” (definicję modułu asynchronicznego),
+		define(['leaflet'], factory);
+	} else if (typeof modules === 'object' && module.exports) {
+		// define a Common JS module that relies on 'leaflet', zdefiniowanie modułu Common JS  ktory opiera sie na leaflet
+		module.exports = factory(require('leaflet'));
+	} else {
+		// Assume Leaflet is loaded into global object L already , załadowanie modułu leflet do globalnego obiektu L
+		factory(L);
+	}
+	
+
+}
+
+
+
+
+(this, function (L) {
+	'use strict';
+
+	L.TileLayer.Provider = L.TileLayer.extend({
+		initialize: function (arg, options) {
+			var providers = L.TileLayer.Provider.providers;
+
+			var parts = arg.split('.');
+
+			var providerName = parts[0];
+			var variantName = parts[1];
+
+			if (!providers[providerName]) {
+				throw 'No such provider (' + providerName + ')';
+			}
+
+			var provider = {
+				url: providers[providerName].url,
+				options: providers[providerName].options
+			};
+
+			// overwrite values in provider from variant.
+			//nadpisuje wartosci z wariantu 
+			if (variantName && 'variants' in providers[providerName]) {
+				if (!(variantName in providers[providerName].variants)) {
+					throw 'No such variant of ' + providerName + ' (' + variantName + ')';
+				}
+				var variant = providers[providerName].variants[variantName];
+				var variantOptions;
+				if (typeof variant === 'string') {
+					variantOptions = {
+						variant: variant
+					};
+				} else {
+					variantOptions = variant.options;
+				}
+				provider = {
+					url: variant.url || provider.url,
+					options: L.Util.extend({}, provider.options, variantOptions)
+				};
+			}
+
+			// replace attribution placeholders with their values from toplevel provider attribution,
+			// recursively  zamień symbole zastępcze atrybucji na ich wartości z atrybucji dostawcy najwyższego poziomu, // rekurencyjnie
+			var attributionReplacer = function (attr) {
+				if (attr.indexOf('{attribution.') === -1) {
+					return attr;
+				}
+				return attr.replace(/\{attribution.(\w*)\}/g,
+					function (match, attributionName) {
+						return attributionReplacer(providers[attributionName].options.attribution);
+					}
+				);
+			};
+			provider.options.attribution = attributionReplacer(provider.options.attribution);
+
+			// Compute final options combining provider options with any user overrides, Oblicz ostateczne opcje łączące opcje dostawcy z dowolnymi zastąpieniami użytkownika
+			
+			var layerOpts = L.Util.extend({}, provider.options, options);
+			L.TileLayer.prototype.initialize.call(this, provider.url, layerOpts);
+		}
+	});
+	
+	/**
+	 * Definition of providers.
+	 * see http://leafletjs.com/reference.html#tilelayer for options in the options map.
+	 */
+
+	L.TileLayer.Provider.providers = {
+		OpenStreetMap: {
+			url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+			options: {
+				maxZoom: 19,
+				attribution:
+					'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+			},
+			variants: {
+				Mapnik: {},
+				DE: {
+					url: 'https://{s}.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png',
+					options: {
+						maxZoom: 18
+					}
+				},
+				
+			
+			}
+		},
+		
+		
+		OpenTopoMap: {
+			url: 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
+			options: {
+				maxZoom: 17,
+				attribution: 'Map data: {attribution.OpenStreetMap}, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
+			}
+		},
+		
+		
+		
+		
+	
+		
+		
+		
+		Stamen: {
+			url: 'https://stamen-tiles-{s}.a.ssl.fastly.net/{variant}/{z}/{x}/{y}{r}.{ext}',
+			options: {
+				attribution:
+					'Map tiles by <a href="http://stamen.com">Stamen Design</a>, ' +
+					'<a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; ' +
+					'Map data {attribution.OpenStreetMap}',
+				subdomains: 'abcd',
+				minZoom: 0,
+				maxZoom: 20,
+				variant: 'toner',
+				ext: 'png'
+			},
+			variants: {
+				Toner: 'toner',
+				
+				Watercolor: {
+					url: 'https://stamen-tiles-{s}.a.ssl.fastly.net/{variant}/{z}/{x}/{y}.{ext}',
+					options: {
+						variant: 'watercolor',
+						ext: 'jpg',
+						minZoom: 1,
+						maxZoom: 16
+					}
+				},
+				
+				
+				
+			}
+		},
+		
+		Esri: {
+			url: 'https://server.arcgisonline.com/ArcGIS/rest/services/{variant}/MapServer/tile/{z}/{y}/{x}',
+			options: {
+				variant: 'World_Street_Map',
+				attribution: 'Tiles &copy; Esri'
+			},
+			variants: {
+				WorldStreetMap: {
+					options: {
+						attribution:
+							'{attribution.Esri} &mdash; ' +
+							'Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012'
+					}
+				},
+				
+				WorldTopoMap: {
+					options: {
+						variant: 'World_Topo_Map',
+						attribution:
+							'{attribution.Esri} &mdash; ' +
+							'Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community'
+					}
+				},
+				WorldImagery: {
+					options: {
+						variant: 'World_Imagery',
+						attribution:
+							'{attribution.Esri} &mdash; ' +
+							'Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+					}
+				},
+				
+				WorldGrayCanvas: {
+					options: {
+						variant: 'Canvas/World_Light_Gray_Base',
+						maxZoom: 16,
+						attribution: '{attribution.Esri} &mdash; Esri, DeLorme, NAVTEQ'
+					}
+				}
+			}
+		},
+		
+		
+	};
+
+	L.tileLayer.provider = function (provider, options) {
+		return new L.TileLayer.Provider(provider, options);
+	};
+
+	return L;
+}));
+
+		var defaultLayer = L.tileLayer.provider('OpenTopoMap.Mapnik').addTo(map);
+
+		var baseLayers = {
+		    'OpenTopoMap Default':defaultLayer,
+			'OpenStreetMap': L.tileLayer.provider('OpenStreetMap'),
+			'Stamen Toner': L.tileLayer.provider('Stamen.Toner'),
+			'Stamen Watercolor': L.tileLayer.provider('Stamen.Watercolor'),
+			'Esri WorldStreetMap': L.tileLayer.provider('Esri.WorldStreetMap'),
+			'Esri WorldTopoMap': L.tileLayer.provider('Esri.WorldTopoMap'),
+			'Esri WorldImagery': L.tileLayer.provider('Esri.WorldImagery'),
+			'Esri WorldGrayCanvas': L.tileLayer.provider('Esri.WorldGrayCanvas'),
+		
+			
+			
+		};
+
+		
+
+		L.control.layers(baseLayers).addTo(map);
+		 	
+						
+					
+		
+		var plan=L.imageOverlay("{% static 'webgis/plan.png' %}",[[51.41469,22.66830],[51.29829,22.83694]]);
+		
+		
+		objOverlays={
+		"Plan zagospodarowania przestrzennego dla gminy Spiczyn":plan
+		};
+		
+	    var panel_plan=L.control.layers(null,objOverlays).addTo(map);
+		
+		var newStyle = {
+		"color": 'transparent',
+		"opacity": 1
+		
+	};
+		var slopeStyle = {
+		"color": '#66CC66'
+		
+		
+	};
+		var dzialkirazemStyle = {
+		"color": '#FFCC00'
+		
+		
+	};
+		var dzialkiaspectStyle = {
+		"color": '#673AB7'
+		
+		
+	};
+		
+		var dzialki=new L.GeoJSON.AJAX("{% url 'dzialkiwszystkiewgsdobre' %}",{
+			style:newStyle,
+			onEachFeature: function (feature, layer) {
+			  
+			layer.bindPopup("Numer działki: "+feature.properties.numer +"<br>Obwód w metrach: "+ feature.properties.obwod+ "<br>Pole w arach: "+feature.properties.pole_ar);
+
+					},	
+					}).addTo(map);
+		 var dzialkirazem=new L.GeoJSON.AJAX("{% url 'dzialkirazemwgsdobre' %}",{
+		    style:dzialkirazemStyle,
+			onEachFeature: function (feature, layer) {
+			  
+			layer.bindPopup("Numer działki: "+feature.properties.numer +"<br>Obwód w metrach: "+ feature.properties.obwod+ "<br>Pole w arach: "+feature.properties.pole_ar);
+
+					},	
+					});
+					
+	    var slope=new L.GeoJSON.AJAX("{% url 'slope' %}",{
+			style:slopeStyle,
+			onEachFeature: function (feature, layer) {
+			  
+			layer.bindPopup("Numer działki: "+feature.properties.numer +"<br>Obwód w metrach:  "+ feature.properties.obwod+ "<br>Pole w arach: "+feature.properties.pole_ar);
+
+					},	
+					});
+					
+		
+		  var dzialkiwszystkie=new L.GeoJSON.AJAX("{% url 'dzialkiwszystkiewgsdobre' %}",{
+			
+			onEachFeature: function (feature, layer) {
+			  
+			layer.bindPopup("Numer działki: "+feature.properties.numer +"<br>Obwód w metrach:  "+ feature.properties.obwod+ "<br>Pole w arach: "+feature.properties.pole_ar);
+
+					},	
+					});
+		  var dzialkiaspect=new L.GeoJSON.AJAX("{% url 'dzialkiaspectwgsdobre' %}",{
+		    style:dzialkiaspectStyle,
+			
+			onEachFeature: function (feature, layer) {
+			  
+			layer.bindPopup("Numer działki: "+feature.properties.numer +"<br>Obwód w metrach:  "+ feature.properties.obwod+ "<br>Pole w arach: "+feature.properties.pole_ar);
+
+					},	
+					});
+
+			
+	
+		var overlayLayers = [
+		
+	 {   
+		
+	    'name': "Wszystkie dzialki",
+		layer: dzialkiwszystkie,
+		active: true
+		
+		 
+	},
+	{
+		//active: true,
+		
+		'name': "Działki o terenie nachylonym o mniej niż 8%",
+		 layer: slope
+		
+		
+	},
+	{
+		//active: true,
+		
+		'name': "Działki spełniające kryterium ekpozycji",
+		 layer: dzialkiaspect
+		
+		
+	},
+	{
+		//active: true,
+		
+		'name': "Działki spełniające oba kryteria",
+		layer: dzialkirazem
+		
+	}
+];
+
+
+
+
+
+map.addControl(new L.Control.PanelLayers(overlayLayers) ); 
+
+
+
+
+var searchControl = new L.control.search({
+		layer:  L.layerGroup([dzialki]),
+		initial: true,
+		//collapsed:true,
+		tipAutoSubmit:true,
+		//marker:{},
+		textErr:"Nie ma działki o podanym numerze",
+		textPlaceholder	:"Wpisz numer działki",
+		propertyName: 'numer',
+		hideMarkerOnCollapse:true,
+		moveToLocation: function(latlng, title, map) {
+        map.fitBounds( latlng.layer.getBounds() );
+        var zoom = map.getBoundsZoom(latlng.layer.getBounds());
+        map.setView(latlng, zoom); // access the zoom
+    }
+});
+    	
+			
+	
+	
+	
+	searchControl.on('search:locationfound', function(e) {
+
+
+
+	e.layer.setStyle({fillColor: 'red'});
+	if(e.layer._popup)
+    e.layer.openPopup();
+
+	}).on('search:collapsed', function(e) {
+
+		dzialki.eachLayer(function(layer) {   //restore feature color
+		dzialki.resetStyle(layer);
+	}); 
+});
+
+map.addControl(searchControl);  
+	
+	
+</script>
+
+
+</div>
+<div id=footer>
+Strona powstała na potrzeby pracy magisterskiej "Serwis internetowy przedstawiający analizę potencjału budowalnego działek w miejscowości Kijany, 
+opartą o algorytymy nachylenia i ekspozycji", praca napisana została pod patronatem dr hab. Beaty Byliny , na wydziale MFI UMCS"
+</div>
+
+</div>
+
+</body>
+</html>

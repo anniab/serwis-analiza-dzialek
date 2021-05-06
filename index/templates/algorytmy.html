@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+ <head>
+
+  <link rel="stylesheet" type="text/css" 
+  href="{% static 'webgis/styl3.css' %}">
+  
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,500&display=swap" rel="stylesheet">
+  
+</head>
+<body>
+<div id="container">
+<div id="menu">
+<h2><center>Analiza potencjału budowlanego dla miejscowości Kijany oparta o algorytmy nachylenia i ekspozycji </center></h2>
+<div class="nav">
+			<ol>
+				<li><a href="{% url '' %}">Mapa</a></li>
+				<li><a href="{% url 'index2' %}">O serwisie</a></li>
+				<li><a href="{% url 'korzystanie' %}">Jak korzystać</a></li>
+				<li><a href="{% url 'stwo_analiza' %}">Stworzenie serwisu </a></li>
+				
+			</ol>
+		
+		</div>
+</div>
+
+<div id="map">
+
+
+<h2>Algorytmy</h2>
+Nachylenie (ang. slope) określone jest jako zmiana wysokości na jednostkę długości w kierunkach największego spadku. Im niższa wartość nachylenia, tym bardziej płaski teren a im wyższa tym bardziej stromy teren.
+ Wielkość nachylenia określa się w procentach lub stopniach. Mapę pokazującą wartości nachylenia określa się również jako mapę spadków.  Mapy nachylenia tworzone są na podstawie na Numerycznego Modelu Terenu, który 
+ najczęściej jest rastrową (macierzową) strukturą danych. 
+ Powszechnie do oszacowania nachylenia używane jest tak zwane ruchome okno. 
+Okno to składa się z siatki pikseli DEMA. Obliczana jest wartość spadku dla komórki centralnej tego okna, przy użyciu otaczających ją pikseli sąsiednich. 
+Najczęściej używane jest okno o wymiarze 3 × 3 piksela, wtedy informacje pochodzą z ośmiu sąsiadujących pikseli. 
+Mapa spadków powstała na potrzeby tej analizy została wygenerowana za pomocą programu ArcGIS, wykorzystującego algorytm Horna.
+Algorytm korzysta z wspomnianej wcześniej maski, obliczając nachylenie centralnej komórki dzięki informacjom pochodzącym z ośmiu sąsiadujących pikseli. 
+Wartości nachylenia dla tej analizy były obliczane w procentach. Ostatecznym wynikiem jest mapa, gdzie każdy jej piksel zawiera informację o  wartości nachylenia podaną w procentach<br><br>
+
+Ekspozycja (ang. aspect) określana jest jako kierunek nachylenia stoku i definiowana jest przez jego azymut, czyli kąt mierzony zgodnie ze wskazówkami zegara pomiędzy kierunkiem północnym a 
+kierunkiem maksymalnego nachylenia. Tereny płaskie są określone jako no data. Mapa ekspozycji bazuje na numerycznym modelu terenu przetworzonym przez algorytm aspect.
+Aby możliwe było wyznaczenie kierunku nachylenia, potrzebna jest wartość samego nachylenia, co obliczane jest dzięki algorytmowi slope.
+Algorytm aspect korzysta więc bezpośrednio z algorytmu wyznaczającego spadek. Także wykorzystuje do obliczeń ruchomą maskę pikseli 3 x 3.
+Wyznaczana jest wartość kierunku nachylenia dla centralnej komórki tej maski dzięki ośmiu sąsiadującym z nią komórkom a następnie określony jest kierunek nachylenia tej komórki. 
+Wartość aspektu musi być jeszcze przeliczona na wartości tak zwanego kompasu (0-360 stopni) odpowiadającego kierunkom świata. Ostatecznym wynikiem jest mapa,
+gdzie każdy jej piksel zawiera informację o  wartości kąta w stopniach (0-360 stopni) odpowiadającemu konkretnemu kierunkowi świata. Dodatkowo każdemu pikselowi nadany jest kolor przypisany do danego kierunku świata.
+</div>
+<div id=footer>
+Strona powstała na potrzeby pracy magisterskiej "Serwis internetowy przedstawiający analizę potencjału budowalnego działek w miejscowości Kijany, 
+opartą o algorytymy nachylenia i ekspozycji", praca napisana została pod patronatem dr hab. Beaty Byliny , na wydziale MFI UMCS"
+</div>
+
+</div>
+
+</body>
+</html>
