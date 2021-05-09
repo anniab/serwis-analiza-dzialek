@@ -5,13 +5,13 @@ Głównym celem serwisu jest wizualizacja efektów analizy potencjału budowalne
 ####  Wdrożoną aplikację można znaleźć pod adresem: https://app-mgr.herokuapp.com
 (Czasami jej pierwsze załadowanie trwa trochę czasu)
 
-Obecne funkcjonalności serwisu pozwalają użytkownikowi na:
--odczytywanie działek spełniających dane kryteria, 
--wyświetlanie informacji o numerze, obwodzie i polu danej działki, 
--wyszukiwanie działek po numerze działki, 
--tworzenie pomiarów na mapie, 
--zmiany map podkładowych, 
--włączenie planu zagospodorowania przestrzennego dla tej gminy, 
+##### Obecne funkcjonalności serwisu pozwalają użytkownikowi na:
+- odczytywanie działek spełniających dane kryteria, 
+- wyświetlanie informacji o numerze, obwodzie i polu danej działki, 
+- wyszukiwanie działek po numerze działki, 
+- tworzenie pomiarów na mapie, 
+- zmiany map podkładowych, 
+- włączenie planu zagospodorowania przestrzennego dla tej gminy, 
 
 ##### Technologie
 - Django
