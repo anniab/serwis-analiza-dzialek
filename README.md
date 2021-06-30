@@ -23,7 +23,7 @@ Głównym celem serwisu jest wizualizacja efektów analizy potencjału budowalne
 
 ##### Uruchomienie aplikacji
 Opisana instrukcja dotyczy systemu komputerowego Windows
-1. Najpierw należy rozpakować plik .
+1. Należy ściągnąć plik zip i go rozpakować, inną analogiczną opcją jest sklonowanie tego repozytorium.
 2. Następnie należy uruchomić konsole.
 3. Następnie należy utworzyć w konsoli wirtualne środowisko i je aktywować:
 ```
@@ -32,7 +32,7 @@ Opisana instrukcja dotyczy systemu komputerowego Windows
 ```
             activate nazwa_srodowiska
 ```
-4. Następnie należy w konsoli przejść do lokalizacji folderu  aplikacja\webgis
+4. Następnie należy w konsoli przejść do lokalizacji folderu \serwis-analiza-dzialek-main\serwis-analiza-dzialek-main
 5. Zainstalować wszystkie biblioteki i pakiety z pliku requirements.txt, w pliku znajdują się  nazwy wszystkich zainstalowanych pakietów i bibliotek wraz z ich dokładną wersją
 ```
             pip install -r requirements.txt
